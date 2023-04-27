@@ -56,7 +56,7 @@ pipeline {
 
                         sh 'git add Versioning.txt'
                         sh 'git commit -m "Updated versioning file ${BUILDFULLNAME}"'
-                        sh 'git push git@github.com:mateuszrog/Jenkins.git'
+                        sh 'git push git@github.com:mateuszrog/Jenkins.git HEAD:mateusz'
 
                     }
                 }

@@ -175,19 +175,19 @@
     #     - "sudo apt update"
     #     - "sudo apt install code"
 
-    - name: Upgrade CentOS
-      tags: centos
-      when: ansible_os_family == "RedHat"
-      block:
-        - name: Check if OS is CentOS 7
-          command: cat /etc/centos-release | grep "CentOS Linux 7"
-          register: centos7
-          failed_when: false
-          changed_when: false
-        - name: Upgrade to CentOS 8
-          command: dnf install -y centos-release-stream
-          when: centos7.rc == 0
-        - name: Update OS packages
-          command: dnf update -y
-        - name: Update and upgrade yum
-          command: yum update && yum upgrade
+    # - name: Upgrade CentOS
+    #   tags: centos
+    #   when: ansible_os_family == "RedHat"
+    #   block:
+    #     - name: Check if OS is CentOS 7
+    #       command: cat /etc/centos-release | grep "CentOS Linux 7"
+    #       register: centos7
+    #       failed_when: false
+    #       changed_when: false
+    #     - name: Upgrade to CentOS 8
+    #       command: dnf install -y centos-release-stream
+    #       when: centos7.rc == 0
+    #     - name: Update OS packages
+    #       command: dnf update -y
+    #     - name: Update and upgrade yum
+    #       command: yum update && yum upgrade

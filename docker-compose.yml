@@ -4,7 +4,8 @@ services:
     build:
       context: ./centos_docker
       dockerfile:  Dockerfile
-    image: 970922/devops:centos_docker
+    # image: 970922/devops:centos_docker
+    image: 970922/centos:latest
     tty: true
     ports:
         - "8765:8765"
@@ -14,7 +15,8 @@ services:
     build:
       context: ./ubuntu_docker
       dockerfile:  Dockerfile
-    image: 970922/devops:ubuntu_docker
+    # image: 970922/devops:ubuntu_docker
+    image: 970922/ubuntu:latest
     tty: true
     ports:
         - "8766:8766"
@@ -24,7 +26,8 @@ services:
     build: 
       context: ./custom-nginx
       dockerfile: Dockerfile
-    image: 970922/devops:custom-nginx
+    # image: 970922/devops:custom-nginx
+    image: 970922/nginx:latest
     tty: true
     ports:
         - "8767:8767"

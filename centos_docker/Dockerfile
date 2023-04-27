@@ -10,5 +10,5 @@ RUN mkdir /home/centos
 
 COPY setup_env.yml /home/centos
 
-RUN ansible-playbook --tags centos /home/centos/setup_env.yml
+# RUN ansible-playbook --tags centos /home/centos/setup_env.yml
 

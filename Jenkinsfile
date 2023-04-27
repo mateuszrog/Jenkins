@@ -12,6 +12,7 @@ pipeline {
 
                     sh 'echo "Current build version :: ${BUILDFULLNAME}"'
                     sh 'echo "BUILDFULLNAME=${BUILDFULLNAME}" > .env'
+                    sh 'echo "{BUILDFULLNAME}" >> Versioning.txt'
 
                }
         }

@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         def BUILDVERSION = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
-        def BUILDFULLNAME = "${BUILDVERSION}_${BUILD_NUMBER}"
+        def BUILDFULLNAME = "${BUILDVERSION}_1.0.${BUILD_NUMBER}"
     }
     
     stages {
@@ -12,6 +12,7 @@ pipeline {
 
                     sh 'echo "Current build version :: ${BUILDFULLNAME}"'
                     sh 'echo "BUILDFULLNAME=${BUILDFULLNAME}" > .env'
+                    sh 'echo "${BUILDFULLNAME} >> Versioning.txt'
 
                }
         }

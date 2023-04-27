@@ -1,0 +1,1 @@
+Corresponding versioning between GitHub (https://github.com/mateuszrog/Jenkins/tree/mateusz) and DockerHub (https://hub.docker.com/repositories/970922):

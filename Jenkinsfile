@@ -17,7 +17,7 @@ pipeline {
 
         stage('Docker Build and Tag for Ubuntu') {
                steps {
-
+                    sh 'cd ubuntu_docker'
                     sh 'docker build -t ubuntu_devops:latest .' 
                     sh 'docker tag ubuntu_devops 970922/ubuntu_devops:latest'
                     sh 'docker tag ubuntu_devops 970922/ubuntu_devops:${BUILDFULLNAME}'

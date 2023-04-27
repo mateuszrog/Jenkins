@@ -6,7 +6,7 @@ pipeline {
     }
     
     stages {
-      stage("Awesome Stage") {
+      stage("Full Name Stage") {
                steps {
                    echo "Current build version :: ${BUILDFULLNAME}"
                }

@@ -7,7 +7,7 @@ pipeline {
     stages {
       stage("Awesome Stage") {
                steps {
-                    echo "Current build version :: $BUILDVERSION"
+                    echo "Current build version :: $BUILDVERSION_$BUILD_NUMBER"
                }
             }
         }

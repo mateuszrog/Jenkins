@@ -10,7 +10,7 @@ pipeline {
         stage('Full Name Stage') {
                steps {
 
-                   echo "Current build version :: ${BUILDFULLNAME}" > .env 
+                   sh 'echo "Current build version :: ${BUILDFULLNAME}" > .env'
 
                }
         }

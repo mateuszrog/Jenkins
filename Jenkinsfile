@@ -1,16 +1,16 @@
 pipeline {
     agent any
     environment {
-        def BUILDVERSION = sh "echo `+%Y +%m +%d'"
+        def BUILDVERSION = sh(script: "echo `date +%Y +%m +%d`", returnStdout: true).trim()
     }
     
-stages {
-  stage("Awesome Stage") {
-           steps {
-                echo "Current build version :: $BUILDVERSION"
-           }
+    stages {
+      stage("Awesome Stage") {
+               steps {
+                    echo "Current build version :: $BUILDVERSION"
+               }
+            }
         }
-    }
 }
 //   stage('Docker Build and Tag') {
 //            steps {

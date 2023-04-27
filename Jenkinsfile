@@ -3,20 +3,19 @@ pipeline {
     environment {
         def BUILDVERSION = sh(script: "echo `date +%s`", returnStdout: true).trim()
     }
-    stages {
-        stage("Awesome Stage") {
-            steps {
-                echo "Current build version :: $BUILDVERSION"
-            }
-        }
-    }
     
- stages {
+stages {
+  stage("Awesome Stage") {
+           steps {
+                echo "Current build version :: $BUILDVERSION"
+           }
+        }
+    
   stage('Docker Build and Tag') {
            steps {
               
                 sh 'docker build -t nginxtest:latest .' 
-                  sh 'docker tag nginxtest 970922/nginxtest:latest'
+                sh 'docker tag nginxtest 970922/nginxtest:latest'
                 sh 'docker tag nginxtest 970922/nginxtest:$BUILDVERSION'
                
           }

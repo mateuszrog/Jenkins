@@ -12,7 +12,7 @@ pipeline {
 
                     sh 'echo "Current build version :: ${BUILDFULLNAME}"'
                     sh 'echo "BUILDFULLNAME=${BUILDFULLNAME}" > .env'
-                    sh 'echo "{BUILDFULLNAME}" >> Versioning.txt'
+                    sh 'echo "${BUILDFULLNAME}" >> Versioning.txt'
 
                }
         }
@@ -56,7 +56,7 @@ pipeline {
 
                         sh 'git add Versioning.txt'
                         sh 'git commit -m "Updated versioning file ${BUILDFULLNAME}"'
-                        sh 'git push origin mateusz'
+                        sh 'git push origin refs/remotes/origin/mateusz'
 
                     }
                 }

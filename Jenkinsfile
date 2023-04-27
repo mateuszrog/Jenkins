@@ -10,39 +10,39 @@ pipeline {
         stage('Full Name Stage') {
                steps {
 
-                   sh 'echo "Current build version :: ${BUILDFULLNAME}"'
-                   sh 'echo "BUILDFULLNAME=${BUILDFULLNAME}" > .env'
+                    sh 'echo "Current build version :: ${BUILDFULLNAME}"'
+                    sh 'echo "BUILDFULLNAME=${BUILDFULLNAME}" > .env'
 
                }
         }
 
-        stage('Docker Build and Tag for Ubuntu') {
+        stage('Docker Compose Pull and Build') {
                steps {
-                    sh 'cd ubuntu_docker'
-                    sh 'docker build -t ubuntu_devops:latest .' 
-                    sh 'docker tag ubuntu_devops 970922/ubuntu_devops:latest'
-                    sh 'docker tag ubuntu_devops 970922/ubuntu_devops:${BUILDFULLNAME}'
+                    
+                    sh 'docker-compose build --pull' 
 
                }
         }
 
-        stage('Publish Ubuntu image to Docker Hub') {
+        stage('Publish images to Docker Hub') {
 
                 steps {
           
                     withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-                    sh  'docker push 970922/ubuntu_devops:latest'
-                    sh  'docker push 970922/ubuntu_devops:${BUILDFULLNAME}' 
+                    sh  'docker-compose push'
                     
                     }
                 }
         }
 
-        stage('Run Docker container on Jenkins Agent') {
+        stage('Run Docker containers on Jenkins Agents') {
 
                 steps {
                     
-                    sh "docker run -d -p 4030:80 970922/ubuntu_devops"
+                    sh "docker run -d -p 4030:80 970922/centos"
+                    sh "docker run -d -p 4040:80 970922/ubuntu"
+                    sh "docker run -d -p 4050:80 970922/nginx"
+
                 
                 }
         }

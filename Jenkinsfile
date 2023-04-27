@@ -52,7 +52,7 @@ pipeline {
         stage('Push changes to Versioning file to match DockerHub and Github'){
                 steps {
 
-                    withCredentials([gitUsernamePassword(credentialsId: '43ffa9a7-a03c-4a63-8525-e17f6dd6f339', gitToolName: 'git-tool')]) {
+                    withCredentials([gitUsernamePassword(credentialsId: '43ffa9a7-a03c-4a63-8525-e17f6dd6f339', url: "")]) {
 
                         sh 'git add Versioning.txt'
                         sh 'git commit -m "Updated versioning file ${BUILDFULLNAME}"'

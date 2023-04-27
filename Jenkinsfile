@@ -9,26 +9,29 @@ pipeline {
         
         stage('Full Name Stage') {
                steps {
+
                    echo "Current build version :: ${BUILDFULLNAME}"
+
                }
         }
 
-        stage('Docker Build and Tag') {
+        stage('Docker Build and Tag for Ubuntu') {
                steps {
 
-                    sh 'docker build -t nginxtest:latest .' 
-                    sh 'docker tag nginxtest 970922/nginxtest:latest'
-                    sh 'docker tag nginxtest 970922/nginxtest:${BUILDFULLNAME}'
+                    sh 'docker build -t ubuntu_devops:latest .' 
+                    sh 'docker tag ubuntu_devops 970922/ubuntu_devops:latest'
+                    sh 'docker tag ubuntu_devops 970922/ubuntu_devops:${BUILDFULLNAME}'
+
                }
         }
 
-        stage('Publish image to Docker Hub') {
+        stage('Publish Ubuntu image to Docker Hub') {
 
                 steps {
           
                     withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-                    sh  'docker push 970922/nginxtest:latest'
-                    sh  'docker push 970922/nginxtest:${BUILDFULLNAME}' 
+                    sh  'docker push 970922/ubuntu_devops:latest'
+                    sh  'docker push 970922/ubuntu_devops:${BUILDFULLNAME}' 
                     
                     }
                 }
@@ -38,7 +41,7 @@ pipeline {
 
                 steps {
                     
-                    sh "docker run -d -p 4030:80 970922/nginxtest"
+                    sh "docker run -d -p 4030:80 970922/ubuntu_devops"
                 
                 }
         }

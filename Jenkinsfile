@@ -10,8 +10,7 @@ pipeline {
             }
         }
     }
-}
-
+    
  stages {
   stage('Docker Build and Tag') {
            steps {

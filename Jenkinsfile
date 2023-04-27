@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         def BUILDVERSION = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
-        def BUILDFULLNAME = ${BUILDVERSION}_${BUILD_NUMBER}
+        def BUILDFULLNAME = "${BUILDVERSION}_${BUILD_NUMBER}"
     }
     
     stages {

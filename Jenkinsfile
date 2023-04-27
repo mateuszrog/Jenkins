@@ -10,7 +10,8 @@ stages {
                 echo "Current build version :: $BUILDVERSION"
            }
         }
-    
+    }
+}
 //   stage('Docker Build and Tag') {
 //            steps {
               

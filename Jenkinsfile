@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        def BUILDVERSION = sh(script: "echo `date +%s`", returnStdout: true).trim()
+        def BUILDVERSION = sh(script: "echo `+%Y%m%d`")
     }
     
 stages {
@@ -11,33 +11,33 @@ stages {
            }
         }
     
-  stage('Docker Build and Tag') {
-           steps {
+//   stage('Docker Build and Tag') {
+//            steps {
               
-                sh 'docker build -t nginxtest:latest .' 
-                sh 'docker tag nginxtest 970922/nginxtest:latest'
-                sh 'docker tag nginxtest 970922/nginxtest:$BUILDVERSION'
+//                 sh 'docker build -t nginxtest:latest .' 
+//                 sh 'docker tag nginxtest 970922/nginxtest:latest'
+//                 sh 'docker tag nginxtest 970922/nginxtest:$BUILDVERSION'
                
-          }
-        }
+//           }
+//         }
    
-  stage('Publish image to Docker Hub') {
+//   stage('Publish image to Docker Hub') {
           
-            steps {
-        withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-          sh  'docker push 970922/nginxtest:latest'
-          sh  'docker push 970922/nginxtest:$BUILDVERSION' 
-        }
+//             steps {
+//         withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
+//           sh  'docker push 970922/nginxtest:latest'
+//           sh  'docker push 970922/nginxtest:$BUILDVERSION' 
+//         }
                   
-          }
-        }
+//           }
+//         }
      
-      stage('Run Docker container on Jenkins Agent') {
+//       stage('Run Docker container on Jenkins Agent') {
              
-            steps {
-                sh "docker run -d -p 4030:80 970922/nginxtest"
+//             steps {
+//                 sh "docker run -d -p 4030:80 970922/nginxtest"
  
-            }
-        }
-    }
-}
+//             }
+//         }
+//     }
+// }

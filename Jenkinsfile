@@ -11,7 +11,7 @@ pipeline {
                steps {
 
                    sh 'echo "Current build version :: ${BUILDFULLNAME}"'
-                   sh 'echo "${BUILDFULLNAME}" > .env'
+                   sh 'echo "BUILDFULLNAME=${BUILDFULLNAME}" > .env'
 
                }
         }

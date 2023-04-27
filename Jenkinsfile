@@ -6,40 +6,41 @@ pipeline {
     }
     
     stages {
-      stage("Full Name Stage") {
+        
+        stage('Full Name Stage') {
                steps {
                    echo "Current build version :: ${BUILDFULLNAME}"
                }
-            }
         }
-}
-  stage('Docker Build and Tag') {
-           steps {
-              
-                sh 'docker build -t nginxtest:latest .' 
-                sh 'docker tag nginxtest 970922/nginxtest:latest'
-                sh 'docker tag nginxtest 970922/nginxtest:${BUILDFULLNAME}'
-               
-          }
+
+        stage('Docker Build and Tag') {
+               steps {
+
+                    sh 'docker build -t nginxtest:latest .' 
+                    sh 'docker tag nginxtest 970922/nginxtest:latest'
+                    sh 'docker tag nginxtest 970922/nginxtest:${BUILDFULLNAME}'
+               }
         }
-   
-  stage('Publish image to Docker Hub') {
+
+        stage('Publish image to Docker Hub') {
+
+                steps {
           
-            steps {
-        withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-          sh  'docker push 970922/nginxtest:latest'
-          sh  'docker push 970922/nginxtest:${BUILDFULLNAME}' 
+                    withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
+                    sh  'docker push 970922/nginxtest:latest'
+                    sh  'docker push 970922/nginxtest:${BUILDFULLNAME}' 
+                    
+                    }
+                }
         }
-                  
-          }
-        }
-     
-      stage('Run Docker container on Jenkins Agent') {
-             
-            steps {
-                sh "docker run -d -p 4030:80 970922/nginxtest"
- 
-            }
+
+        stage('Run Docker container on Jenkins Agent') {
+
+                steps {
+                    
+                    sh "docker run -d -p 4030:80 970922/nginxtest"
+                
+                }
         }
     }
 }

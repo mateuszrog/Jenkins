@@ -2,12 +2,13 @@ pipeline {
     agent any
     environment {
         def BUILDVERSION = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
+        def BUILDFULLNAME = ${BUILDVERSION}_${BUILD_NUMBER}
     }
     
     stages {
       stage("Awesome Stage") {
                steps {
-                   echo "Current build version :: ${BUILDVERSION}_${BUILD_NUMBER}"
+                   echo "Current build version :: ${BUILDFULLNAME}"
                }
             }
         }

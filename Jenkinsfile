@@ -1,22 +1,34 @@
 pipeline {
     agent any
+    environment {
+        def BUILDVERSION = sh(script: "echo `date +%s`", returnStdout: true).trim()
+    }
+    stages {
+        stage("Awesome Stage") {
+            steps {
+                echo "Current build version :: $BUILDVERSION"
+            }
+        }
+    }
+}
+
  stages {
   stage('Docker Build and Tag') {
            steps {
               
                 sh 'docker build -t nginxtest:latest .' 
                   sh 'docker tag nginxtest 970922/nginxtest:latest'
-                sh 'docker tag nginxtest 970922/nginxtest:$BUILD_NUMBER'
+                sh 'docker tag nginxtest 970922/nginxtest:$BUILDVERSION'
                
           }
         }
-     
+   
   stage('Publish image to Docker Hub') {
           
             steps {
         withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
           sh  'docker push 970922/nginxtest:latest'
-          sh  'docker push 970922/nginxtest:$BUILD_NUMBER' 
+          sh  'docker push 970922/nginxtest:$BUILDVERSION' 
         }
                   
           }

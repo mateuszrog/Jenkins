@@ -5,3 +5,4 @@ Corresponding versioning between GitHub (https://github.com/mateuszrog/Jenkins/t
 20230428_1.0.21
 20230428_1.0.24
 20230501_1.0.26
+20230503_1.0.34

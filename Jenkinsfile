@@ -56,7 +56,7 @@ pipeline {
 
                         sh 'git add Versioning.txt'
                         sh 'git commit -m "Updated versioning file ${BUILDFULLNAME}"'
-                        sh 'git push origin HEAD:mateusz'
+                        sh 'git push origin HEAD:main'
 
                     }
                 }

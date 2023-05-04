@@ -4,7 +4,7 @@ services:
     build:
       context: ./centos_docker
       dockerfile:  Dockerfile
-    image: 970922/centos:${BUILDFULLNAME}
+    image: ${registryUrl}/centos:${BUILDFULLNAME}
     tty: true
     ports:
         - "8765:8765"
@@ -14,7 +14,7 @@ services:
     build:
       context: ./ubuntu_docker
       dockerfile:  Dockerfile
-    image: 970922/ubuntu:${BUILDFULLNAME}
+    image: ${registryUrl}/ubuntu:${BUILDFULLNAME}
     tty: true
     ports:
         - "8766:8766"
@@ -24,7 +24,7 @@ services:
     build: 
       context: ./custom-nginx
       dockerfile: Dockerfile
-    image: 970922/nginx:${BUILDFULLNAME}
+    image: ${registryUrl}/nginx:${BUILDFULLNAME}
     tty: true
     ports:
         - "8767:8767"

@@ -1,34 +1,38 @@
 version: '3'
 services:
-  centos_docker:
+  centos:
     build:
       context: ./centos_docker
       dockerfile:  Dockerfile
-    image: 970922/centos:${BUILDFULLNAME}
+    image: ${registryUrl}/centos:${BUILDFULLNAME}
     tty: true
     ports:
-        - "8765:8765"
+        - "22:22"
     volumes:
-      - ./datavolume:/usr/share/centos_docker/data
-  ubuntu_docker:
+      - mydata:/mount/test-volume
+  ubuntu:
     build:
       context: ./ubuntu_docker
       dockerfile:  Dockerfile
-    image: 970922/ubuntu:${BUILDFULLNAME}
+    image: ${registryUrl}/ubuntu:${BUILDFULLNAME}
     tty: true
     ports:
-        - "8766:8766"
+        - "2222:2222"
     volumes:
-      - ./datavolume:/usr/share/ubuntu_docker/data
-  custom-nginx:
-    build: 
+      - mydata:/mount/test-volume
+  nginx:
+    build:
       context: ./custom-nginx
       dockerfile: Dockerfile
-    image: 970922/nginx:${BUILDFULLNAME}
+    image: ${registryUrl}/nginx:${BUILDFULLNAME}
     tty: true
     ports:
-        - "8767:8767"
+        - "80:80"
     volumes:
-      - ./datavolume:/usr/share/custom-nginx/data
+      - mydata:/mount/test-volume
 volumes:
-  datavolume: {}
+  mydata:
+    driver: azure_file
+    driver_opts:
+      share_name: myfileshare
+      storage_account_name: mateuszrogstorage

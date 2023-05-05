@@ -1,65 +1,66 @@
 pipeline {
-    agent any
-    environment {
-        def BUILDVERSION = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
-        def BUILDFULLNAME = "${BUILDVERSION}_1.0.${BUILD_NUMBER}"
+     agent any
+     
+        environment {
+            def BUILDVERSION = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
+            def BUILDFULLNAME = "${BUILDVERSION}_1.0.${BUILD_NUMBER}"
+            
+            //once you create ACR in Azure cloud, use that here
+            registryName = "acrlab1"
+            //- update your credentials ID after creating credentials for connecting to ACR
+            registryCredential = 'ACR_Mati'
+            dockerImage = ''
+            registryUrl = 'acrlab1.azurecr.io'
     }
     
     stages {
-        
-        stage('Full Name Stage') {
-               steps {
 
-                    sh 'echo "Current build version :: ${BUILDFULLNAME}"'
-                    sh 'echo "BUILDFULLNAME=${BUILDFULLNAME}" > .env'
-                    sh 'echo "${BUILDFULLNAME}" >> Versioning.txt'
-
-               }
+        stage ('checkout') {
+            steps {
+            checkout scmGit(branches: [[name: '*/dockercomposik']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitpls', url: 'https://github.com/mateuszrog/Jenkins']])
+            }
         }
-
-        stage('Docker Compose Pull and Build') {
-               steps {
-                    
-                    sh 'docker-compose build --pull' 
-
-               }
-        }
-
-        stage('Publish images to Docker Hub') {
-
-                steps {
-          
-                    withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-                    
-                        sh  'docker-compose push'
-                    
-                    }
-                }
-        }
-
-        stage('Run Docker containers on Jenkins Agents') {
-
-                steps {
-                    
-                    sh 'docker run -d -p 4030:80 970922/centos'
-                    sh 'docker run -d -p 4040:80 970922/ubuntu'
-                    sh 'docker run -d -p 4050:80 970922/nginx'
-
+       
+        stage ('Build Docker image') {
+            steps {
                 
+                script {
+                    sh 'echo "Current build version :: ${BUILDFULLNAME}"'
+                    sh 'echo "BUILDFULLNAME=${BUILDFULLNAME}\nregistryUrl=${registryUrl}" > .env'
+                    sh 'echo "${BUILDFULLNAME}" >> Versioning.txt'
+    
+                    sh 'docker-compose build --pull'
+                    sh 'docker logout'
                 }
+            }
         }
-        
-        stage('Push changes to Versioning file to match DockerHub and Github'){
-                steps {
-
-                    withCredentials([gitUsernamePassword(credentialsId: 'gitpls', url: "")]) {
-
-                        sh 'git add Versioning.txt'
-                        sh 'git commit -m "Updated versioning file ${BUILDFULLNAME}"'
-                        sh 'git push origin HEAD:main'
-
-                    }
-                }
+       
+    // Uploading Docker images into ACR
+    stage('Upload Image to ACR') {
+     steps{   
+         script {
+            
+            docker.withRegistry("http://${registryUrl}", registryCredential) {
+                sh  'docker-compose push'
+            }
         }
+      }
     }
-}
+
+       // Stopping Docker containers for cleaner Docker run
+     stage('stop previous containers') {
+         steps {
+            sh 'docker ps -f name=mypythonContainer -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -fname=mypythonContainer -q | xargs -r docker container rm'
+         }
+      }
+      
+    // stage('Docker Run') {
+    //  steps{
+    //      script {
+    //             sh 'docker run -d -p 8096:5000 --rm --name mypythonContainer ${registryUrl}/${registryName}'
+    //         }
+    //   }
+    // }
+    }
+ }

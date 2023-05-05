@@ -1,5 +1,7 @@
 FROM ubuntu:latest
 
+EXPOSE 2222
+
 RUN apt update && apt upgrade sudo -y
 
 RUN apt install vim ansible openssh-server sudo -y

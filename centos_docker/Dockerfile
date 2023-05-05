@@ -1,5 +1,7 @@
 FROM centos:centos7
 
+EXPOSE 22
+
 RUN yum update sudo -y 
 
 RUN yum install -y epel-release 

@@ -28,6 +28,8 @@ pipeline {
                     sh 'echo "Current build version :: ${BUILDFULLNAME}"'
                     sh 'echo "BUILDFULLNAME=${BUILDFULLNAME}\nregistryUrl=${registryUrl}" > .env'
                     sh 'echo "${BUILDFULLNAME}" >> Versioning.txt'
+                    sh 'docker context use default'
+                    sh 'docker context ls'
     
                     sh 'docker-compose build --pull'
                     sh 'docker logout'
@@ -42,6 +44,14 @@ pipeline {
             
             docker.withRegistry("http://${registryUrl}", registryCredential) {
                 sh  'docker-compose push'
+                sh 'docker context ls'
+                sh 'docker context create aci mateuszaci --resource-group ACR'
+                sh 'docker context ls'
+                sh 'docker context use mateuszaci'
+                // sh 'docker --context mateuszaci volume create test-volume --storage-account mateuszrogstorage'
+                sh 'docker --context mateuszaci volume ls'
+                sh 'docker compose up -d'
+
             }
         }
       }
